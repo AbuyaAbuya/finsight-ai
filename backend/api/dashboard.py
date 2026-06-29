@@ -1,48 +1,71 @@
-from pathlib import Path
+from fastapi import APIRouter, Query
 
-import duckdb
-from fastapi import APIRouter
+from backend.services.dashboard_service import DashboardService
 
-router = APIRouter(prefix="/api/dashboard", tags=["Dashboard"])
+router = APIRouter(
+    prefix="/api/dashboard",
+    tags=["Dashboard"],
+)
 
-DB_PATH = Path(__file__).resolve().parents[2] / "database" / "finsight.duckdb"
+
+@router.get("")
+def get_dashboard(
+    year: int | None = Query(None),
+    quarter: str | None = Query(None),
+    month: str | None = Query(None),
+    country: str | None = Query(None),
+):
+
+    service = DashboardService()
+
+    try:
+        return service.get_dashboard(
+            year=year,
+            quarter=quarter,
+            month=month,
+            country=country,
+        )
+    finally:
+        service.close()
 
 
 @router.get("/kpis")
-def get_dashboard_kpis():
+def get_dashboard_kpis(
+    year: int | None = Query(None),
+    quarter: str | None = Query(None),
+    month: str | None = Query(None),
+    country: str | None = Query(None),
+):
 
-    conn = duckdb.connect(DB_PATH)
+    service = DashboardService()
 
-    revenue = conn.execute("""
-        SELECT COALESCE(SUM(balance),0)
-        FROM FinancialReportingMart
-        WHERE subaccount='Sales'
-    """).fetchone()[0]
+    try:
+        return service.get_kpis(
+            year=year,
+            quarter=quarter,
+            month=month,
+            country=country,
+        )
+    finally:
+        service.close()
 
-    expenses = conn.execute("""
-        SELECT COALESCE(SUM(ABS(balance)),0)
-        FROM FinancialReportingMart
-        WHERE report='Profit and Loss'
-          AND balance < 0
-    """).fetchone()[0]
 
-    profit = conn.execute("""
-        SELECT COALESCE(SUM(balance),0)
-        FROM FinancialReportingMart
-        WHERE subaccount='Retained Earnings'
-    """).fetchone()[0]
+@router.get("/revenue-trend")
+def get_revenue_trend(
+    year: int | None = Query(None),
+    quarter: str | None = Query(None),
+    month: str | None = Query(None),
+    country: str | None = Query(None),
+):
 
-    cash = conn.execute("""
-        SELECT COALESCE(SUM(balance),0)
-        FROM FinancialReportingMart
-        WHERE account='Cash & Cash Equivalents'
-    """).fetchone()[0]
+    service = DashboardService()
 
-    conn.close()
-
-    return {
-        "revenue": revenue,
-        "expenses": expenses,
-        "profit": profit,
-        "cash": cash,
-    }
+    try:
+        return service.get_revenue_trend(
+            year=year,
+            quarter=quarter,
+            month=month,
+            country=country,
+        )
+    finally:
+        service.close()

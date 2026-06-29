@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   BookOpen,
@@ -5,47 +7,209 @@ import {
   Landmark,
   Wallet,
   TrendingUp,
+  Calculator,
+  BarChart3,
   Bot,
   Settings,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
-
-const menu = [
-  { icon: LayoutDashboard, title: "Dashboard" },
-  { icon: BookOpen, title: "Trial Balance" },
-  { icon: FileText, title: "Income Statement" },
-  { icon: Landmark, title: "Balance Sheet" },
-  { icon: Wallet, title: "Cash Flow" },
-  { icon: TrendingUp, title: "Forecasting" },
-  { icon: Bot, title: "AI Copilot" },
-  { icon: Settings, title: "Settings" },
-];
 
 function Sidebar() {
   return (
-    <aside className="w-72 bg-slate-900 text-white flex flex-col">
-      <div className="p-6 border-b border-slate-700">
-        <h1 className="text-2xl font-bold">FinSight AI</h1>
-        <p className="text-sm text-slate-400 mt-1">
-          Enterprise FP&amp;A
+    <aside className="w-80 bg-slate-950 text-white border-r border-slate-800 flex flex-col">
+
+      {/* Logo */}
+      <div className="px-8 py-7 border-b border-slate-800">
+        <h1 className="text-3xl font-bold tracking-tight">
+          FinSight AI
+        </h1>
+
+        <p className="text-sm text-slate-400 mt-2">
+          Enterprise Financial Planning & Analysis
         </p>
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
-        {menu.map((item) => {
-          const Icon = item.icon;
+      <div className="flex-1 overflow-y-auto py-4">
 
-          return (
-            <button
-              key={item.title}
-              className="flex items-center gap-3 w-full rounded-lg px-4 py-3 hover:bg-slate-800 transition"
-            >
-              <Icon size={20} />
-              <span>{item.title}</span>
-            </button>
-          );
-        })}
-      </nav>
+        <SidebarSection
+          title="Executive"
+          items={[
+            {
+              icon: LayoutDashboard,
+              title: "Executive Dashboard",
+              path: "/",
+            },
+          ]}
+        />
+
+        <SidebarSection
+          title="Financial Reporting"
+          items={[
+            {
+              icon: BookOpen,
+              title: "Trial Balance",
+              path: "/trial-balance",
+            },
+            {
+              icon: FileText,
+              title: "Income Statement",
+              path: "/income-statement",
+            },
+            {
+              icon: Landmark,
+              title: "Balance Sheet",
+              path: "/balance-sheet",
+            },
+            {
+              icon: Wallet,
+              title: "Cash Flow",
+              path: "/cash-flow",
+            },
+            {
+              icon: FileText,
+              title: "Statement of Equity",
+              path: "/statement-equity",
+            },
+          ]}
+        />
+
+        <SidebarSection
+          title="Planning & Analysis"
+          items={[
+            {
+              icon: TrendingUp,
+              title: "Budget",
+              path: "/budget",
+            },
+            {
+              icon: TrendingUp,
+              title: "Forecast",
+              path: "/forecast",
+            },
+            {
+              icon: BarChart3,
+              title: "Variance Analysis",
+              path: "/variance",
+            },
+            {
+              icon: BarChart3,
+              title: "Scenario Planning",
+              path: "/scenario",
+            },
+          ]}
+        />
+
+        <SidebarSection
+          title="Analytics"
+          items={[
+            {
+              icon: Calculator,
+              title: "Financial Ratios",
+              path: "/ratios",
+            },
+            {
+              icon: BarChart3,
+              title: "Reports",
+              path: "/reports",
+            },
+          ]}
+        />
+
+        <SidebarSection
+          title="Artificial Intelligence"
+          items={[
+            {
+              icon: Bot,
+              title: "AI Copilot",
+              path: "/ai-copilot",
+            },
+          ]}
+        />
+
+        <SidebarSection
+          title="Administration"
+          items={[
+            {
+              icon: Settings,
+              title: "Settings",
+              path: "/settings",
+            },
+          ]}
+        />
+
+      </div>
+
+      <div className="border-t border-slate-800 p-6">
+        <div className="rounded-xl bg-slate-900 p-4">
+          <p className="text-sm font-semibold">
+            FinSight AI
+          </p>
+
+          <p className="text-xs text-slate-400 mt-1">
+            Version 1.0
+          </p>
+        </div>
+      </div>
+
     </aside>
+  );
+}
+
+function SidebarSection({ title, items }) {
+
+  const [open, setOpen] = useState(true);
+
+  return (
+    <div className="mb-3">
+
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-5 py-2 text-xs uppercase tracking-widest text-slate-500 hover:text-white transition"
+      >
+        <span>{title}</span>
+
+        {open ? (
+          <ChevronDown size={15} />
+        ) : (
+          <ChevronRight size={15} />
+        )}
+      </button>
+
+      {open && (
+        <div className="mt-1 space-y-1">
+
+          {items.map((item) => {
+
+            const Icon = item.icon;
+
+            return (
+              <NavLink
+                key={item.title}
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 mx-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow-lg"
+                      : "text-slate-300 hover:bg-slate-900 hover:text-white"
+                  }`
+                }
+              >
+                <Icon size={18} />
+
+                <span className="text-sm font-medium">
+                  {item.title}
+                </span>
+
+              </NavLink>
+            );
+
+          })}
+
+        </div>
+      )}
+
+    </div>
   );
 }
 

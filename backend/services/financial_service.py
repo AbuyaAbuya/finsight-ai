@@ -1,5 +1,4 @@
 import duckdb
-import pandas as pd
 
 DB_PATH = "database/finsight.duckdb"
 
@@ -9,163 +8,286 @@ class FinancialService:
     def __init__(self):
         self.conn = duckdb.connect(DB_PATH)
 
-    # ---------------------------------------------------------
-    # Trial Balance
-    # ---------------------------------------------------------
+    # ==========================================================
+    # Build WHERE Clause
+    # ==========================================================
 
-    def trial_balance(self):
+    def build_where(
+        self,
+        year=None,
+        quarter=None,
+        month=None,
+        country=None,
+    ):
 
-        return self.conn.execute("""
+        clauses = []
+        params = []
 
-            SELECT *
+        if year:
+            clauses.append("year = ?")
+            params.append(year)
 
-            FROM TrialBalance
+        if quarter:
+            clauses.append("quarter = ?")
+            params.append(quarter)
 
-            ORDER BY
+        if month:
+            clauses.append("month = ?")
+            params.append(month)
 
-                year,
-                month_number,
-                account_key
+        if country:
+            clauses.append("country = ?")
+            params.append(country)
 
-        """).fetchdf()
+        where = ""
 
-    # ---------------------------------------------------------
-    # Income Statement
-    # ---------------------------------------------------------
+        if clauses:
+            where = " WHERE " + " AND ".join(clauses)
 
-    def income_statement(self):
+        return where, params
 
-        return self.conn.execute("""
+    # ==========================================================
+    # TRIAL BALANCE
+    # ==========================================================
 
-            SELECT
+    def trial_balance(
+        self,
+        year=None,
+        quarter=None,
+        month=None,
+        country=None,
+    ):
 
-                year,
-                quarter,
-                month,
-                country,
+        where, params = self.build_where(
+            year,
+            quarter,
+            month,
+            country,
+        )
 
-                subclass,
-                subclass2,
-                account,
-                subaccount,
+        query = f"""
 
-                SUM(balance) balance
+        SELECT
 
-            FROM FinancialReportingMart
+            report,
 
-            WHERE report='Profit and Loss'
+            class,
 
-            GROUP BY
+            subclass,
 
-                year,
-                quarter,
-                month,
-                country,
+            subclass2,
 
-                subclass,
-                subclass2,
-                account,
-                subaccount
+            account_key,
 
-            ORDER BY
+            account,
 
-                year,
-                month,
-                subclass
+            SUM(debit) AS debit,
 
-        """).fetchdf()
+            SUM(credit) AS credit
 
-    # ---------------------------------------------------------
-    # Balance Sheet
-    # ---------------------------------------------------------
+        FROM FinancialReportingMart
 
-    def balance_sheet(self):
+        {where}
 
-        return self.conn.execute("""
+        GROUP BY
 
-            SELECT
+            report,
+            class,
+            subclass,
+            subclass2,
+            account_key,
+            account
 
-                year,
-                quarter,
-                month,
-                country,
+        HAVING
 
-                subclass,
-                subclass2,
-                account,
-                subaccount,
+            SUM(debit) <> 0
+            OR
+            SUM(credit) <> 0
 
-                SUM(balance) balance
+        ORDER BY
 
-            FROM FinancialReportingMart
+            report,
+            class,
+            subclass,
+            account_key
 
-            WHERE report='Balance Sheet'
+        """
 
-            GROUP BY
+        return self.conn.execute(
+            query,
+            params,
+        ).fetchdf()
 
-                year,
-                quarter,
-                month,
-                country,
+    # ==========================================================
+    # INCOME STATEMENT
+    # ==========================================================
 
-                subclass,
-                subclass2,
-                account,
-                subaccount
+    def income_statement(
+        self,
+        year=None,
+        quarter=None,
+        month=None,
+        country=None,
+    ):
 
-            ORDER BY
+        where, params = self.build_where(
+            year,
+            quarter,
+            month,
+            country,
+        )
 
-                year,
-                month,
-                subclass
+        query = f"""
 
-        """).fetchdf()
+        SELECT
 
-    # ---------------------------------------------------------
-    # KPI Summary
-    # ---------------------------------------------------------
+            subclass,
 
-    def kpis(self):
+            subclass2,
 
-        return self.conn.execute("""
+            account,
 
-            SELECT
+            subaccount,
 
-                COUNT(*)                    AS rows,
+            SUM(balance) AS balance
 
-                SUM(balance)                AS balance,
+        FROM FinancialReportingMart
 
-                SUM(debit)                  AS debit,
+        {where}
 
-                SUM(credit)                 AS credit,
+        {"AND" if where else "WHERE"}
 
-                SUM(transactions)           AS transactions
+        report='Profit and Loss'
 
-            FROM FinancialReportingMart
+        GROUP BY
 
-        """).fetchdf()
+            subclass,
+            subclass2,
+            account,
+            subaccount
 
-    # ---------------------------------------------------------
-    # Countries
-    # ---------------------------------------------------------
+        ORDER BY
 
-    def countries(self):
+            subclass,
+            subclass2,
+            account,
+            subaccount
 
-        return self.conn.execute("""
+        """
 
-            SELECT DISTINCT
+        return self.conn.execute(
+            query,
+            params,
+        ).fetchdf()
+    # ==========================================================
+    # BALANCE SHEET
+    # ==========================================================
 
-                country
+    def balance_sheet(
+        self,
+        year=None,
+        quarter=None,
+        month=None,
+        country=None,
+    ):
 
-            FROM FinancialReportingMart
+        where, params = self.build_where(
+            year,
+            quarter,
+            month,
+            country,
+        )
 
-            ORDER BY country
+        query = f"""
 
-        """).fetchdf()
+        SELECT
 
-    # ---------------------------------------------------------
-    # Years
-    # ---------------------------------------------------------
+            subclass,
+
+            subclass2,
+
+            account,
+
+            subaccount,
+
+            SUM(balance) AS balance
+
+        FROM FinancialReportingMart
+
+        {where}
+
+        {"AND" if where else "WHERE"}
+
+        report='Balance Sheet'
+
+        GROUP BY
+
+            subclass,
+            subclass2,
+            account,
+            subaccount
+
+        ORDER BY
+
+            subclass,
+            subclass2,
+            account,
+            subaccount
+
+        """
+
+        return self.conn.execute(
+            query,
+            params,
+        ).fetchdf()
+
+    # ==========================================================
+    # KPI SUMMARY
+    # ==========================================================
+
+    def kpis(
+        self,
+        year=None,
+        quarter=None,
+        month=None,
+        country=None,
+    ):
+
+        where, params = self.build_where(
+            year,
+            quarter,
+            month,
+            country,
+        )
+
+        query = f"""
+
+        SELECT
+
+            COUNT(*) AS rows,
+
+            COUNT(DISTINCT account_key) AS accounts,
+
+            SUM(debit) AS debit,
+
+            SUM(credit) AS credit,
+
+            SUM(transactions) AS transactions
+
+        FROM FinancialReportingMart
+
+        {where}
+
+        """
+
+        return self.conn.execute(
+            query,
+            params,
+        ).fetchdf()
+
+    # ==========================================================
+    # YEARS
+    # ==========================================================
 
     def years(self):
 
@@ -181,9 +303,89 @@ class FinancialService:
 
         """).fetchdf()
 
-    # ---------------------------------------------------------
-    # Close
-    # ---------------------------------------------------------
+    # ==========================================================
+    # QUARTERS
+    # ==========================================================
+
+    def quarters(self):
+
+        return self.conn.execute("""
+
+            SELECT DISTINCT
+
+                quarter
+
+            FROM FinancialReportingMart
+
+            ORDER BY quarter
+
+        """).fetchdf()
+
+    # ==========================================================
+    # MONTHS
+    # ==========================================================
+
+    def months(self):
+
+        return self.conn.execute("""
+
+            SELECT DISTINCT
+
+                month,
+                month_number
+
+            FROM FinancialReportingMart
+
+            ORDER BY month_number
+
+        """).fetchdf()
+
+    # ==========================================================
+    # COUNTRIES
+    # ==========================================================
+
+    def countries(self):
+
+        return self.conn.execute("""
+
+            SELECT DISTINCT
+
+                country
+
+            FROM FinancialReportingMart
+
+            ORDER BY country
+
+        """).fetchdf()
+
+    # ==========================================================
+    # REPORTING PERIOD
+    # ==========================================================
+
+    def latest_reporting_period(self):
+
+        return self.conn.execute("""
+
+            SELECT
+
+                year,
+                quarter,
+                month
+
+            FROM FinancialReportingMart
+
+            ORDER BY
+
+                year DESC,
+                month_number DESC
+
+            LIMIT 1
+
+        """).fetchone()
+
+    # ==========================================================
+    # CLOSE CONNECTION
+    # ==========================================================
 
     def close(self):
         self.conn.close()
