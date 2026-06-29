@@ -1,0 +1,37 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# DuckDB temp
+*.duckdb.wal
+# Database
+database/
+*.duckdb
+*.duckdb.wal
+
+# Source datasets
+data/
+
+# Legacy application
+frontend_old/
