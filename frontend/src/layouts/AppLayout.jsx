@@ -1,44 +1,53 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 
 function AppLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    return (
+  return (
+    <div className="h-screen flex bg-slate-100 overflow-hidden">
 
-        <div className="h-screen flex bg-slate-100">
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-            {/* Sidebar */}
+      {/* Sidebar */}
 
-            <Sidebar />
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
 
-            {/* Content */}
+      {/* Content */}
 
-            <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden">
 
-                {/* Header */}
+        <Topbar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
 
-                <Topbar />
+        <main className="flex-1 overflow-y-auto">
 
-                {/* Main */}
+          <div className="max-w-[1800px] mx-auto px-4 md:px-6 lg:px-10 py-6 lg:py-8">
 
-                <main className="flex-1 overflow-y-auto">
+            <Outlet />
 
-                    <div className="max-w-[1800px] mx-auto px-10 py-8">
+          </div>
 
-                        <Outlet />
+        </main>
 
-                    </div>
+      </div>
 
-                </main>
-
-            </div>
-
-        </div>
-
-    );
-
+    </div>
+  );
 }
 
 export default AppLayout;
