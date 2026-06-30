@@ -1,7 +1,5 @@
 # FinSight AI
 ### Enterprise Financial Planning & Analysis (FP&A) Platform
-
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
 ![React](https://img.shields.io/badge/React-Frontend-61DAFB)
