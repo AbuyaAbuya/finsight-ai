@@ -1,37 +1,54 @@
-# Python
-backend/.venv/
-backend/__pycache__/
-*.pyc
-*.pyo
-*.pyd
+# ============================
+# Frontend Dependencies
+# ============================
 
-# Node
 frontend/node_modules/
 frontend/dist/
 
-# VS Code
-.vscode/
+# ============================
+# Python Virtual Environment
+# ============================
 
-# Environment
+.venv/
+venv/
+
+# ============================
+# Environment Variables
+# ============================
+
 .env
 .env.*
 
+# ============================
 # Logs
+# ============================
+
 *.log
 
-# OS
+# ============================
+# VS Code
+# ============================
+
+.vscode/
+
+# ============================
+# Operating System Files
+# ============================
+
 .DS_Store
 Thumbs.db
 
-# DuckDB temp
-*.duckdb.wal
-# Database
-database/
-*.duckdb
+# ============================
+# DuckDB Temporary Files
+# ============================
+
 *.duckdb.wal
 
-# Source datasets
-data/
+# ============================
+# Legacy
+# ============================
 
-# Legacy application
 frontend_old/
+# Python cache
+__pycache__/
+*.py[cod]
