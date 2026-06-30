@@ -13,7 +13,12 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # Local Development
         "http://localhost:5173",
+
+        # Vercel Frontend
+        # Replace this after deployment
+        "https://your-vercel-app.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
