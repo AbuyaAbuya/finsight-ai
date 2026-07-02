@@ -1,73 +1,114 @@
 # FinSight AI
-### Enterprise Financial Planning & Analysis (FP&A) Platform
+
+### AI-Powered Financial Planning & Analysis (FP&A) Platform
+
+> Enterprise Financial Planning & Analysis platform for reporting, budgeting, forecasting, KPI monitoring, and AI-driven executive decision support.
+
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
 ![React](https://img.shields.io/badge/React-Frontend-61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-Build-purple)
 ![DuckDB](https://img.shields.io/badge/DuckDB-Analytics-orange)
+![Status](https://img.shields.io/badge/Status-Work%20In%20Progress-yellow)
 
 ---
 
-## Overview
+# 🚀 Live Demo
 
-FinSight AI is an enterprise-grade Financial Planning & Analysis (FP&A) platform designed to transform traditional financial reporting into an intelligent decision-support system.
-
-The platform integrates accounting data, financial statements, budgeting, forecasting, variance analysis, KPI monitoring, and AI-generated insights into one modern analytics environment.
-
-Rather than simply displaying reports, FinSight AI helps finance professionals understand:
-
-- Business performance
-- Profitability drivers
-- Cash flow trends
-- Financial risks
-- Strategic opportunities
-- Executive decision support
-
-The long-term vision is to build an AI-powered finance platform comparable to modern FP&A solutions used by global organizations.
-
----
-
-# Live Demo
-
-### Frontend
+### 🌐 Frontend
 
 https://finsight-ai-ebon-tau.vercel.app
 
-### Backend API
+### ⚙ Backend API
 
 https://finsight-ai-xtss.onrender.com
 
----
-
-# GitHub Repository
+### 💻 GitHub Repository
 
 https://github.com/AbuyaAbuya/finsight-ai
 
 ---
 
-# Current Features
+# 📖 Overview
+
+FinSight AI is an enterprise-grade **Financial Planning & Analysis (FP&A)** platform designed to transform traditional financial reporting into an intelligent decision-support system.
+
+The application combines financial reporting, budgeting, forecasting, variance analysis, KPI monitoring, financial intelligence, and AI-generated insights within one modern web platform.
+
+Rather than simply displaying financial statements, FinSight AI enables finance professionals to:
+
+- Monitor organizational performance
+- Understand profitability drivers
+- Analyze revenue and expense trends
+- Track cash flow and liquidity
+- Support executive decision-making
+- Generate AI-powered financial insights
+
+The long-term vision is to evolve FinSight AI into a comprehensive **Enterprise Performance Management (EPM)** platform capable of supporting CFOs, FP&A teams, Finance Managers, Controllers, and Executive Leadership.
+
+---
+
+# 📸 Application Preview
 
 ## Executive Dashboard
 
-Provides a comprehensive executive summary including:
+A centralized executive dashboard providing real-time visibility into key financial metrics including Revenue, Expenses, Net Profit, Cash Position, KPI monitoring, and interactive financial trends.
 
-- Revenue
-- Expenses
-- Net Profit
-- Cash Position
-- KPI Cards
+![Executive Dashboard](screenshots/dashboard.png)
+
+---
+
+## Executive Insights
+
+AI-powered financial summaries that automatically highlight key revenue trends, profitability performance, operating expenses, and cash position to support executive decision-making.
+
+![Executive Insights](screenshots/executive-insights.png)
+
+---
+
+## Financial Intelligence
+
+Interactive financial analytics showing revenue drivers, expense composition, and cash allocation to help identify the factors driving business performance.
+
+![Financial Intelligence](screenshots/financial-intelligence.png)
+
+---
+
+## Mobile Experience
+
+Responsive mobile interface enabling finance professionals to securely access dashboards, financial reports, and analytics from any device.
+
+![Mobile Experience](screenshots/mobile-navigation.png)
+
+---
+# ✨ Current Features
+
+FinSight AI is being developed as an enterprise-grade Financial Planning & Analysis (FP&A) platform that combines financial reporting, analytics, planning, and artificial intelligence into a unified decision-support system.
+
+## 📊 Executive Dashboard
+
+The Executive Dashboard provides a comprehensive financial overview through interactive visualizations and executive-level KPIs.
+
+### Current capabilities
+
+- Revenue Monitoring
+- Expense Monitoring
+- Net Profit Analysis
+- Cash Position Tracking
+- Interactive KPI Cards
 - Monthly Revenue Trends
-- Expense Trends
+- Expense Trend Analysis
 - Profitability Analysis
-- Cash Position
-- AI Insights
+- AI-powered Executive Insights
 - Financial Recommendations
 
 ---
 
-## Financial Reporting
+## 📑 Financial Reporting
 
-Current reports include:
+Generate standardized financial reports from a centralized financial data warehouse.
+
+### Available Reports
 
 - Trial Balance
 - Income Statement
@@ -77,331 +118,326 @@ Current reports include:
 
 ---
 
-## Planning & Analysis
+## 📈 Planning & Analysis
 
-Current modules include:
+Core FP&A capabilities currently under development.
 
-- Budgeting
-- Forecasting
+### Current Modules
+
+- Budget Planning
+- Financial Forecasting
 - Variance Analysis
 - Scenario Planning
 
 ---
 
-## Financial Analytics
+## 📉 Financial Analytics
 
-Includes:
+Interactive analytics designed to help finance teams better understand organizational performance.
+
+### Available Analytics
 
 - Financial Ratios
-- Trend Analysis
 - Revenue Analysis
 - Expense Analysis
 - Profitability Analysis
+- Revenue Drivers
+- Expense Drivers
+- Cash Composition Analysis
+- Executive KPI Reporting
 
 ---
 
-## AI Assistant
+## 🤖 Artificial Intelligence
 
-Current implementation includes:
+The AI layer is designed to transform traditional reporting into intelligent financial decision support.
+
+### Current Features
 
 - Executive Insights
-- Automated Recommendations
-- Financial Commentary
+- Automated Financial Commentary
+- Financial Recommendations
 
-Future releases will include:
+### Planned Features
 
-- Natural Language Queries
-- Chat with Financial Statements
-- AI Financial Advisor
-- Predictive Analytics
-- Root Cause Analysis
-- Automated Board Reports
-
----
-
-# Technology Stack
-
-## Backend
-
-- Python
-- FastAPI
-- DuckDB
-- Pandas
-- OpenPyXL
+- AI Financial Copilot
+- Natural Language Financial Queries
+- Predictive Forecasting
+- Cash Flow Prediction
+- Automated Variance Explanations
+- Board Report Generation
+- Financial Risk Detection
 
 ---
 
-## Frontend
+# ⭐ Key Highlights
 
-- React
-- Vite
-- React Router
-- Axios
-- TailwindCSS
-- Recharts
-- Lucide Icons
-
----
-
-## Deployment
-
-Frontend
-
-- Vercel
-
-Backend
-
-- Render
-
----
-
-# Architecture
-
-```
-Excel / ERP / Accounting Data
-            │
-            ▼
-     Data Processing
-        (Pandas)
-            │
-            ▼
-        DuckDB Warehouse
-            │
-            ▼
-      FastAPI REST API
-            │
-            ▼
-      React Frontend
-            │
-            ▼
- Executive Financial Dashboards
-            │
-            ▼
-      AI Recommendation Engine
-```
-
----
-
-# Current Dashboard Modules
-
-✔ Executive Dashboard
-
-✔ Trial Balance
-
-✔ Income Statement
-
-✔ Balance Sheet
-
-✔ Cash Flow Statement
-
-✔ Statement of Equity
-
-✔ Budget
-
-✔ Forecast
-
-✔ Variance Analysis
-
-✔ Scenario Planning
-
-✔ Financial Ratios
-
-✔ Reports
-
-✔ AI Copilot
-
----
-
-# Roadmap
-
-## Phase 1 (Completed)
-
-- Financial database
-- Executive Dashboard
-- Financial Statements
-- KPI Reporting
-- Revenue Analytics
-- Expense Analytics
-- Cash Analysis
-- Interactive Dashboard
-- REST API
+- Enterprise-grade FP&A Platform
+- Executive Financial Dashboard
+- Financial Intelligence Engine
+- Interactive KPI Reporting
+- AI-powered Executive Insights
+- Financial Statement Reporting
+- Revenue & Expense Analytics
+- Responsive Web Interface
+- REST API Architecture
 - Cloud Deployment
+- Mobile-Friendly Design
+- Modern React User Experience
 
 ---
 
-## Phase 2
+# 🛠 Technology Stack
 
-- Multi-company support
-- User authentication
-- Role-based security
-- Audit logs
-- Report scheduling
+| Layer | Technology |
+|--------|------------|
+| **Frontend** | React, Vite, Tailwind CSS, React Router, Axios |
+| **Backend** | Python, FastAPI |
+| **Database** | DuckDB |
+| **Data Processing** | Pandas, OpenPyXL |
+| **Charts & Visualizations** | Recharts |
+| **Icons** | Lucide React |
+| **Deployment** | Vercel, Render |
+| **Version Control** | Git & GitHub |
+
+---
+
+# 🏗 System Architecture
+
+```text
+              Excel / ERP / Accounting Data
+                           │
+                           ▼
+                Data Processing (Pandas)
+                           │
+                           ▼
+                   DuckDB Data Warehouse
+                           │
+                           ▼
+                    FastAPI REST API
+                           │
+                           ▼
+               React + Tailwind Frontend
+                           │
+                           ▼
+              Executive Financial Dashboard
+                           │
+                           ▼
+             AI Insights & Recommendation Engine
+```
+
+---
+# 🚧 Project Status
+
+**Current Version:** v1.0
+
+**Development Status:** Active Development
+
+FinSight AI is currently under active development with a focus on building an enterprise-grade AI-powered Financial Planning & Analysis (FP&A) platform. While the current version delivers interactive dashboards, financial reporting, and executive insights, several advanced planning and AI capabilities are under development.
+
+---
+
+# ✅ Current Dashboard Modules
+
+The following modules are currently available or under active development.
+
+| Module | Status |
+|---------|:------:|
+| Executive Dashboard | ✅ |
+| Trial Balance | ✅ |
+| Income Statement | ✅ |
+| Balance Sheet | ✅ |
+| Cash Flow Statement | ✅ |
+| Statement of Changes in Equity | ✅ |
+| Budget | 🚧 |
+| Forecast | 🚧 |
+| Variance Analysis | 🚧 |
+| Scenario Planning | 🚧 |
+| Financial Ratios | 🚧 |
+| Reports | 🚧 |
+| AI Copilot | 🚧 |
+
+---
+
+# 🗺 Roadmap
+
+## ✅ Phase 1 — Foundation (Completed)
+
+- Financial Data Warehouse
+- FastAPI REST API
+- React Frontend
+- Executive Dashboard
+- KPI Reporting
+- Financial Statements
+- Revenue Analysis
+- Expense Analysis
+- Cash Analysis
+- Executive Financial Insights
+- Cloud Deployment (Vercel + Render)
+
+---
+
+## 🚧 Phase 2 — Planning & Analysis (In Progress)
+
+- Budget Planning
+- Rolling Forecasts
+- Variance Analysis
+- Scenario Planning
+- Financial Ratio Analysis
+- Executive Reports
 - PDF Export
 - Excel Export
 - PowerPoint Export
 
 ---
 
-## Phase 3
+## 🔐 Phase 3 — Enterprise Features
 
-Planning & Analysis
-
-- Driver-based budgeting
-- Rolling Forecasts
-- Workforce Planning
-- Sales Forecasting
-- Capital Planning
-- Scenario Modelling
-- What-if Analysis
+- User Authentication
+- Role-Based Access Control
+- Multi-Company Support
+- Consolidated Reporting
+- Audit Logs
+- Scheduled Reports
+- Notification Center
 
 ---
 
-## Phase 4
-
-Artificial Intelligence
+## 🤖 Phase 4 — Artificial Intelligence
 
 - AI Financial Copilot
-- Chat with Financial Statements
-- Natural Language Queries
+- Natural Language Financial Queries
 - Predictive Forecasting
 - Cash Flow Prediction
-- Risk Detection
+- Financial Risk Detection
 - Automated Variance Explanations
-- Executive Board Report Generation
+- Intelligent Board Reports
+- Conversational Financial Analytics
 
 ---
 
-## Phase 5
+## 🌍 Phase 5 — Enterprise Integrations
 
-Enterprise Platform
-
-- ERP Integration
 - SAP
-- Oracle
+- Oracle ERP
 - Microsoft Dynamics
 - QuickBooks
 - Xero
 - Odoo
-- API Integrations
+- REST API Integrations
+- Cloud Data Warehouses
 
 ---
 
-# Future Vision
+# 🎯 Future Vision
 
-The vision is to evolve FinSight AI into an intelligent Enterprise Performance Management (EPM) platform capable of supporting:
+The long-term vision is to transform FinSight AI into an Enterprise Performance Management (EPM) platform that combines Financial Planning & Analysis, Business Intelligence, Artificial Intelligence, and Predictive Analytics into a unified decision-support solution.
 
-- CFOs
+The platform is being designed to support:
+
+- Chief Financial Officers (CFOs)
 - FP&A Analysts
-- Controllers
 - Finance Managers
-- CEOs
+- Controllers
 - Executive Leadership Teams
+- Business Decision Makers
 
-with AI-driven financial intelligence, planning, forecasting, and strategic decision support.
+Future releases will introduce intelligent budgeting, predictive forecasting, scenario modelling, AI-assisted financial analysis, conversational reporting, and enterprise ERP integrations, enabling organizations to move beyond traditional reporting towards proactive financial decision-making.
+
+---
+# ☁ Deployment
+
+The application is currently deployed using the following services:
+
+| Component | Platform |
+|------------|----------|
+| Frontend | Vercel |
+| Backend API | Render |
+| Database | DuckDB |
 
 ---
 
-# Screenshots
+# 📂 Project Structure
 
-(Add screenshots here as the application evolves.)
-
----
-
-# Installation
-
-Clone the repository
-
-```bash
-git clone https://github.com/AbuyaAbuya/finsight-ai.git
-```
-
-Move into the project
-
-```bash
-cd finsight-ai
-```
-
-Install frontend dependencies
-
-```bash
-cd frontend
-npm install
-```
-
-Install backend dependencies
-
-```bash
-cd ../
-pip install -r requirements.txt
-```
-
-Run backend
-
-```bash
-uvicorn backend.main:app --reload
-```
-
-Run frontend
-
-```bash
-cd frontend
-npm run dev
-```
-
----
-
-# Project Structure
-
-```
+```text
 finsight-ai/
-
-backend/
-    analytics/
-    api/
-    services/
-    main.py
-
-frontend/
-    components/
-    pages/
-    contexts/
-    layouts/
-
-database/
-    finsight.duckdb
-
-data/
-    general_ledger.xlsx
-
-requirements.txt
+│
+├── backend/
+│   ├── analytics/
+│   ├── api/
+│   ├── services/
+│   ├── database/
+│   └── main.py
+│
+├── frontend/
+│   ├── components/
+│   ├── contexts/
+│   ├── layouts/
+│   ├── pages/
+│   └── services/
+│
+├── database/
+│
+├── data/
+│
+├── screenshots/
+│
+├── docs/
+│
+├── requirements.txt
+│
+└── README.md
 ```
 
 ---
 
-# Author
+# 🤝 Contributing
 
-**Joseph Abuya**
+Contributions, ideas, and constructive feedback are welcome.
 
-Finance | Data Science | FP&A | Business Intelligence | Artificial Intelligence
+If you would like to improve FinSight AI:
 
-GitHub
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
+
+---
+
+# 👨‍💻 Author
+
+## Joseph Abuya
+
+Finance • Financial Planning & Analysis (FP&A) • Data Science • Business Intelligence • Artificial Intelligence
+
+### GitHub
 
 https://github.com/AbuyaAbuya
 
-LinkedIn
+### LinkedIn
 
-(Add your LinkedIn URL)
-
----
-
-# License
-
-MIT License
+https://www.linkedin.com/in/joseph-abuya/
 
 ---
 
-## Acknowledgements
+# 🙏 Acknowledgements
 
-This project is being developed as a personal initiative to demonstrate how Artificial Intelligence, Financial Planning & Analysis (FP&A), Business Intelligence, and Modern Data Engineering can be integrated into a unified enterprise finance platform.
+FinSight AI is a personal initiative that brings together Financial Planning & Analysis (FP&A), Business Intelligence, Data Engineering, and Artificial Intelligence into a unified enterprise finance platform.
 
-It serves as both a learning platform and a foundation toward building next-generation AI-powered financial decision support systems.
+The project serves as both a learning journey and a demonstration of how modern analytics and AI can enhance financial planning, reporting, and strategic decision-making.
+
+Special thanks to the open-source community whose tools and libraries have made this project possible.
+
+---
+
+# ⭐ Support the Project
+
+If you found this project interesting or useful:
+
+⭐ Star the repository
+
+🍴 Fork the repository
+
+💬 Share your feedback
+
+Your support and suggestions are greatly appreciated as FinSight AI continues to evolve.
