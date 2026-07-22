@@ -4,8 +4,8 @@ import api from "../services/api";
 
 import KPICard from "../components/KPICard";
 import FilterBar from "../components/FilterBar";
-import RevenueTrendChart from "../components/RevenueTrendChart";
-import ExpenseTrendChart from "../components/ExpenseTrendChart";
+import RevenueExpenseChart from "../components/RevenueExpenseChart";
+import CountryPerformanceChart from "../components/CountryPerformanceChart";
 import ExecutiveInsights from "../components/ExecutiveInsights";
 import FinancialDrivers from "../components/FinancialDrivers";
 
@@ -79,6 +79,10 @@ function Dashboard() {
 
         expenseTrend,
 
+        profitTrend,
+
+        countryPerformance,
+
         insights,
 
         revenueDrivers,
@@ -88,6 +92,31 @@ function Dashboard() {
         cashBreakdown,
 
     } = dashboard;
+
+    // Merge revenue, expense, and profit trends by month into a single
+    // dataset for the combined chart. Profit comes directly from the
+    // backend's profitTrend (same account definition as the Net Profit
+    // KPI card) rather than being derived as revenue-minus-expenses,
+    // since that approximation silently drops non-operating income
+    // (Interest Income, Dividend Income, Gains) and would disagree
+    // with the KPI card.
+    const combinedTrend = (revenueTrend || []).map((rev) => {
+        const matchingExpense = (expenseTrend || []).find(
+            (exp) => exp.month_number === rev.month_number
+        );
+
+        const matchingProfit = (profitTrend || []).find(
+            (p) => p.month_number === rev.month_number
+        );
+
+        return {
+            month: rev.month,
+            month_number: rev.month_number,
+            revenue: rev.revenue,
+            expenses: matchingExpense ? matchingExpense.expenses : 0,
+            profit: matchingProfit ? matchingProfit.profit : 0,
+        };
+    });
 
     return (
 
@@ -137,19 +166,17 @@ function Dashboard() {
 
             </div>
 
-            {/* Charts */}
+            {/* Chart */}
 
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-7">
+            <RevenueExpenseChart
+                data={combinedTrend}
+            />
 
-                <RevenueTrendChart
-                    data={revenueTrend}
-                />
+            {/* Country Performance */}
 
-                <ExpenseTrendChart
-                    data={expenseTrend}
-                />
-
-            </div>
+            <CountryPerformanceChart
+                data={countryPerformance}
+            />
 
             {/* Executive Insights */}
 

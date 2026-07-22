@@ -161,9 +161,27 @@ def filters():
 # ==========================================================
 
 @router.get("/cash-flow")
-def cash_flow():
+def cash_flow(
+    year: int | None = None,
+    quarter: str | None = None,
+    month: str | None = None,
+    country: str | None = None,
+):
 
-    return []
+    service = FinancialService()
+
+    try:
+
+        return service.cash_flow(
+            year,
+            quarter,
+            month,
+            country,
+        )
+
+    finally:
+
+        service.close()
 
 
 # ==========================================================
@@ -171,6 +189,52 @@ def cash_flow():
 # ==========================================================
 
 @router.get("/statement-of-equity")
-def statement_of_equity():
+def statement_of_equity(
+    year: int | None = None,
+    quarter: str | None = None,
+    month: str | None = None,
+    country: str | None = None,
+):
 
-    return []
+    service = FinancialService()
+
+    try:
+
+        return service.statement_of_equity(
+            year,
+            quarter,
+            month,
+            country,
+        )
+
+    finally:
+
+        service.close()
+
+
+# ==========================================================
+# Financial Ratios
+# ==========================================================
+
+@router.get("/ratios")
+def financial_ratios(
+    year: int | None = None,
+    quarter: str | None = None,
+    month: str | None = None,
+    country: str | None = None,
+):
+
+    service = FinancialService()
+
+    try:
+
+        return service.financial_ratios(
+            year,
+            quarter,
+            month,
+            country,
+        )
+
+    finally:
+
+        service.close()

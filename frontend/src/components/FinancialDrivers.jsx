@@ -104,7 +104,7 @@ function FinancialDrivers({
 
                             <div className="text-sm text-slate-500 mt-1">
 
-                                KES {currency(driver.amount)}
+                                {currency(driver.amount)}
 
                             </div>
 
@@ -174,7 +174,7 @@ function FinancialDrivers({
 
                             <div className="text-sm text-slate-500 mt-1">
 
-                                KES {currency(driver.amount)}
+                                {currency(driver.amount)}
 
                             </div>
 
@@ -218,9 +218,15 @@ function FinancialDrivers({
 
                             </span>
 
-                            <span className="font-bold text-blue-700">
+                            <span
+                                className={`font-bold ${
+                                    Number(cash.amount) < 0
+                                        ? "text-rose-600"
+                                        : "text-blue-700"
+                                }`}
+                            >
 
-                                KES {currency(cash.amount)}
+                                {currency(cash.amount)}
 
                             </span>
 

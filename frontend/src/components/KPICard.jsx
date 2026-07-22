@@ -1,6 +1,7 @@
 import {
   TrendingUp,
   TrendingDown,
+  Minus,
   DollarSign,
   Wallet,
   Landmark,
@@ -36,11 +37,13 @@ function KPICard({ title, kpi }) {
 
   const item = config[title];
   const Icon = item.icon;
+  const hasComparison = kpi.direction === "up" || kpi.direction === "down";
+  const trend = kpi.recentTrend;
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 p-6">
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between">
 
         <div>
 
@@ -62,25 +65,51 @@ function KPICard({ title, kpi }) {
 
       <div className="mt-6 flex items-center justify-between">
 
-        <div
-          className={`flex items-center gap-2 text-sm font-semibold ${
-            kpi.direction === "up"
-              ? "text-emerald-600"
-              : "text-rose-600"
-          }`}
-        >
-          {kpi.direction === "up" ? (
-            <TrendingUp size={18} />
-          ) : (
-            <TrendingDown size={18} />
-          )}
+        {hasComparison ? (
+          <div
+            className={`flex items-center gap-2 text-sm font-semibold ${
+              kpi.direction === "up"
+                ? "text-emerald-600"
+                : "text-rose-600"
+            }`}
+          >
+            {kpi.direction === "up" ? (
+              <TrendingUp size={18} />
+            ) : (
+              <TrendingDown size={18} />
+            )}
 
-          {kpi.change}%
+            {kpi.change}%
+          </div>
+        ) : trend ? (
+          <div
+            className={`flex items-center gap-2 text-sm font-semibold ${
+              trend.direction === "up"
+                ? "text-emerald-600"
+                : trend.direction === "down"
+                ? "text-rose-600"
+                : "text-slate-400"
+            }`}
+          >
+            {trend.direction === "up" ? (
+              <TrendingUp size={18} />
+            ) : trend.direction === "down" ? (
+              <TrendingDown size={18} />
+            ) : (
+              <Minus size={18} />
+            )}
 
-        </div>
+            {trend.change_pct}%
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 text-sm font-semibold text-slate-400">
+            <Minus size={18} />
+            No comparison
+          </div>
+        )}
 
         <span className="text-xs text-slate-400">
-          {kpi.comparison}
+          {trend ? `${trend.prior_year} vs ${trend.latest_year}` : kpi.comparison}
         </span>
 
       </div>
@@ -88,7 +117,7 @@ function KPICard({ title, kpi }) {
       <div className="mt-3">
 
         <p className="text-sm text-slate-500">
-          {kpi.message}
+          {!hasComparison && trend ? trend.insight : kpi.message}
         </p>
 
       </div>

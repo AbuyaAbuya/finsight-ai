@@ -4,7 +4,7 @@ class GLAnalyzer:
     the largest contributors to Revenue, Expenses and Cash.
     """
 
-    def top_expense_drivers(self, conn, where="", params=None):
+    def top_expense_drivers(self, conn, where="", params=None, true_total=None):
 
         if params is None:
             params = []
@@ -13,11 +13,11 @@ class GLAnalyzer:
             f"""
             SELECT
                 subaccount,
-                SUM(ABS(balance)) AS amount
+                SUM(balance) AS amount
             FROM FinancialReportingMart
             {where}
             {"AND" if where else "WHERE"} report='Profit and Loss'
-            AND balance < 0
+            AND balance > 0
             GROUP BY
                 subaccount
             ORDER BY
@@ -27,7 +27,15 @@ class GLAnalyzer:
             params,
         ).fetchall()
 
-        total = sum(r[1] for r in rows)
+        # Percent should reflect each driver's share of TRUE total
+        # expenses (matching the Expenses KPI card), not just the
+        # sum of the top 5 shown here -- otherwise "40% of total
+        # expenses" would silently mean "40% of the top 5," which
+        # doesn't reconcile with the KPI card number.
+        if true_total is not None and true_total > 0:
+            total = true_total
+        else:
+            total = sum(r[1] for r in rows)
 
         drivers = []
 
@@ -53,7 +61,7 @@ class GLAnalyzer:
 
     # -----------------------------------------------------
 
-    def top_revenue_drivers(self, conn, where="", params=None):
+    def top_revenue_drivers(self, conn, where="", params=None, true_total=None):
 
         if params is None:
             params = []
@@ -62,7 +70,7 @@ class GLAnalyzer:
             f"""
             SELECT
                 subaccount,
-                SUM(balance) AS amount
+                -SUM(balance) AS amount
             FROM FinancialReportingMart
             {where}
             {"AND" if where else "WHERE"} subaccount='Sales'
@@ -75,7 +83,10 @@ class GLAnalyzer:
             params,
         ).fetchall()
 
-        total = sum(r[1] for r in rows)
+        if true_total is not None and true_total > 0:
+            total = true_total
+        else:
+            total = sum(r[1] for r in rows)
 
         drivers = []
 
