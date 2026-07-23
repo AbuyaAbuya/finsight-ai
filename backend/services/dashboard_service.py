@@ -297,6 +297,13 @@ class DashboardService:
                     },
                 }
 
+                positive_when_up_by_metric = {
+                    "revenue": True,
+                    "expenses": False,
+                    "profit": True,
+                    "cash": True,
+                }
+
                 for metric_key in ["revenue", "expenses", "profit", "cash"]:
                     cur_val = current_metrics[metric_key]
                     prior_val = prior_metrics[metric_key]
@@ -313,6 +320,13 @@ class DashboardService:
                     else:
                         trend_dir = "down"
 
+                    if trend_dir == "flat":
+                        trend_favorable = None
+                    elif positive_when_up_by_metric[metric_key]:
+                        trend_favorable = trend_dir == "up"
+                    else:
+                        trend_favorable = trend_dir == "down"
+
                     insight = insight_templates[metric_key][trend_dir].format(
                         pct=abs(pct), y=auto_year, py=auto_prev_year
                     )
@@ -324,6 +338,7 @@ class DashboardService:
                         "prior_value": float(prior_val),
                         "change_pct": round(abs(pct), 1),
                         "direction": trend_dir,
+                        "favorable": trend_favorable,
                         "insight": insight,
                     }
 
@@ -401,6 +416,7 @@ class DashboardService:
                     "value": float(current),
                     "change": 0,
                     "direction": "neutral",
+                    "favorable": None,
                     "comparison": "Previous Year",
                     "message": "Select a specific year to see a year-over-year comparison.",
                 }
@@ -416,6 +432,7 @@ class DashboardService:
                     "value": float(current),
                     "change": 0,
                     "direction": "neutral",
+                    "favorable": None,
                     "comparison": "Previous Year",
                     "message": "No previous-year data available.",
                 }
@@ -430,6 +447,13 @@ class DashboardService:
 
             else:
                 direction = "down"
+
+            if direction == "neutral":
+                favorable = None
+            elif positive_when_up:
+                favorable = direction == "up"
+            else:
+                favorable = direction == "down"
 
             if positive_when_up:
 
@@ -453,6 +477,7 @@ class DashboardService:
                 "value": float(current),
                 "change": round(abs(change), 1),
                 "direction": direction,
+                "favorable": favorable,
                 "comparison": "Previous Year",
                 "message": message,
             }

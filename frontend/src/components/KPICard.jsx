@@ -68,9 +68,11 @@ function KPICard({ title, kpi }) {
         {hasComparison ? (
           <div
             className={`flex items-center gap-2 text-sm font-semibold ${
-              kpi.direction === "up"
+              kpi.favorable === false
+                ? "text-rose-600"
+                : kpi.favorable === true
                 ? "text-emerald-600"
-                : "text-rose-600"
+                : "text-slate-400"
             }`}
           >
             {kpi.direction === "up" ? (
@@ -84,10 +86,10 @@ function KPICard({ title, kpi }) {
         ) : trend ? (
           <div
             className={`flex items-center gap-2 text-sm font-semibold ${
-              trend.direction === "up"
-                ? "text-emerald-600"
-                : trend.direction === "down"
+              trend.favorable === false
                 ? "text-rose-600"
+                : trend.favorable === true
+                ? "text-emerald-600"
                 : "text-slate-400"
             }`}
           >
