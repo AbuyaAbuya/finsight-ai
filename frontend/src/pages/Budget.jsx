@@ -1,10 +1,74 @@
 import { useEffect, useMemo, useState } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Download } from "lucide-react";
 
 import api from "../services/api";
 
+import BudgetKPICards from "../components/BudgetKPICards";
+import BudgetProgress from "../components/BudgetProgress";
 import BudgetTable from "../components/BudgetTable";
 import BudgetChart from "../components/BudgetChart";
+
+// Accounts treated as "spend" for the KPI cards and utilization
+// progress bar -- excludes revenue and non-operating income, since
+// "budget utilization" is a spend-control concept, not a revenue one.
+const EXPENSE_ACCOUNTS = [
+  "Cost of Sales",
+  "Staff Costs",
+  "Commissions",
+  "Advertisements",
+  "Travel",
+  "Entertainment",
+  "Office Supplies",
+  "Professional Services",
+  "Telephone",
+  "Utilities",
+  "Other Expenses",
+  "Equipment",
+  "Amortization of Intangible Assets",
+  "Interest Expense",
+  "Taxation",
+];
+
+const CREDIT_NORMAL_ACCOUNTS = [
+  "Sales",
+  "Interest Income",
+  "Dividend Income",
+  "Gain/Loss on Sales of Asset",
+  "Exchange Loss/Gain",
+];
+
+function downloadCsv(rows) {
+  const headers = ["Account", "Budget", "Actual", "Variance", "Variance %", "Status"];
+
+  const lines = [
+    headers.join(","),
+    ...rows.map((r) =>
+      [
+        r.account,
+        r.budget.toFixed(2),
+        r.actual.toFixed(2),
+        r.variance.toFixed(2),
+        r.variance_pct === null ? "" : r.variance_pct,
+        r.favorable ? "Within Budget" : "Over Budget",
+      ]
+        .map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`)
+        .join(",")
+    ),
+  ];
+
+  const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.setAttribute("download", "budget-vs-actual.csv");
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
+}
 
 function Budget() {
   const [years, setYears] = useState([]);
@@ -130,13 +194,7 @@ function Budget() {
 
     return Object.values(byAccount).map((r) => {
       const variance = r.actual - r.budget;
-      const creditNormal = [
-        "Sales",
-        "Interest Income",
-        "Dividend Income",
-        "Gain/Loss on Sales of Asset",
-        "Exchange Loss/Gain",
-      ].includes(r.account);
+      const creditNormal = CREDIT_NORMAL_ACCOUNTS.includes(r.account);
 
       const favorable = creditNormal ? variance >= 0 : variance <= 0;
       const variance_pct = r.budget ? (variance / Math.abs(r.budget)) * 100 : null;
@@ -158,15 +216,52 @@ function Budget() {
     return [...seen.entries()].sort((a, b) => a[0] - b[0]).map(([, m]) => m);
   }, [rows]);
 
+  // KPI totals: expense accounts only (spend control, not revenue).
+  const { totalBudget, totalActual } = useMemo(() => {
+    const spendRows = displayRows.filter((r) => EXPENSE_ACCOUNTS.includes(r.account));
+    return {
+      totalBudget: spendRows.reduce((s, r) => s + r.budget, 0),
+      totalActual: spendRows.reduce((s, r) => s + r.actual, 0),
+    };
+  }, [displayRows]);
+
+  // Top 10 by absolute variance -- the biggest deviations from plan,
+  // not just the biggest expense lines (that's already covered by the
+  // Dashboard's Expense Drivers panel).
+  const top10Variance = useMemo(() => {
+    return [...displayRows]
+      .sort((a, b) => Math.abs(b.variance) - Math.abs(a.variance))
+      .slice(0, 10);
+  }, [displayRows]);
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-slate-800">Budget</h1>
           <p className="text-slate-500 mt-2">
-            Budget vs Actual by account. Select a month to edit individual
-            budget lines.
+            Are we spending according to plan?
           </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => downloadCsv(displayRows)}
+            disabled={displayRows.length === 0}
+            className="inline-flex items-center gap-2 bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-40 text-slate-700 font-semibold px-4 py-2 rounded-lg transition text-sm"
+          >
+            <Download size={16} />
+            Export
+          </button>
+
+          <button
+            onClick={handleRegenerate}
+            disabled={regenerating}
+            className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-900 disabled:opacity-50 text-white font-semibold px-4 py-2 rounded-lg transition text-sm"
+          >
+            <RefreshCw size={16} className={regenerating ? "animate-spin" : ""} />
+            Regenerate Budget
+          </button>
         </div>
       </div>
 
@@ -221,15 +316,6 @@ function Budget() {
             className="w-20 border border-slate-200 rounded-lg px-3 py-2 text-sm"
           />
         </div>
-
-        <button
-          onClick={handleRegenerate}
-          disabled={regenerating}
-          className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-900 disabled:opacity-50 text-white font-semibold px-4 py-2 rounded-lg transition text-sm"
-        >
-          <RefreshCw size={16} className={regenerating ? "animate-spin" : ""} />
-          Regenerate Baseline
-        </button>
       </div>
 
       {!month && (
@@ -249,13 +335,21 @@ function Budget() {
         </div>
       ) : (
         <>
+          <BudgetKPICards totalBudget={totalBudget} totalActual={totalActual} />
+
           <BudgetTable
             rows={displayRows}
             editable={!!month}
             onUpdateBudget={handleUpdateBudget}
           />
 
-          <BudgetChart rows={displayRows} />
+          <BudgetChart
+            rows={top10Variance}
+            title="Top 10 Variances"
+            subtitle="Largest deviations between budget and actual, by absolute size"
+          />
+
+          <BudgetProgress totalBudget={totalBudget} totalActual={totalActual} />
         </>
       )}
     </div>

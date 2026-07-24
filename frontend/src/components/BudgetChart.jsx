@@ -13,7 +13,7 @@ function formatNumber(value) {
     return Number(value).toLocaleString();
 }
 
-function BudgetChart({ rows }) {
+function BudgetChart({ rows, title = "Budget vs Actual", subtitle = "Planned vs actual spend and revenue by account" }) {
     if (!rows || rows.length === 0) return null;
 
     const data = rows.map((r) => ({
@@ -26,10 +26,10 @@ function BudgetChart({ rows }) {
         <div className="bg-white rounded-xl shadow p-6">
             <div className="mb-6">
                 <h2 className="text-xl font-semibold text-slate-800">
-                    Budget vs Actual
+                    {title}
                 </h2>
                 <p className="text-sm text-slate-500">
-                    Planned vs actual spend and revenue by account
+                    {subtitle}
                 </p>
             </div>
 
