@@ -171,14 +171,14 @@ function SidebarContent({
             path: "/budget",
           },
           {
-            icon: TrendingUp,
-            title: "Forecast",
-            path: "/forecast",
-          },
-          {
             icon: BarChart3,
             title: "Variance Analysis",
             path: "/variance",
+          },
+          {
+            icon: TrendingUp,
+            title: "Forecast",
+            path: "/forecast",
           },
           {
             icon: BarChart3,
